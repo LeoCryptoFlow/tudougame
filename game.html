@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成语连连看 - 解压小游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 95%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9f2f9 100%);
+            border-radius: 15px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #667eea;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .victory-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            transition: transform 0.5s ease;
+        }
+
+        .victory-message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .victory-message h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .victory-message p {
+            font-size: 1.3em;
+            margin: 10px 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header h1 {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🎮 成语连连看</h1>
+        </div>
+        
+        <div class="info-bar">
+            <div class="info-item">
+                <div class="info-label">时间</div>
+                <div class="info-value" id="time">0</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">配对数</div>
+                <div class="info-value" id="pairs">0/8</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">分数</div>
+                <div class="info-value" id="score">0</div>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas" width="700" height="500"></canvas>
+
+        <div class="controls">
+            <button onclick="game.restart()">🔄 重新开始</button>
+            <button onclick="game.showHint()">💡 提示</button>
+        </div>
+    </div>
+
+    <div class="victory-message" id="victoryMessage">
+        <h2>🎉 恭喜过关！</h2>
+        <p>用时：<span id="finalTime">0</span> 秒</p>
+        <p>得分：<span id="finalScore">0</span> 分</p>
+        <button onclick="game.restart(); document.getElementById('victoryMessage').classList.remove('show');" style="margin-top: 20px;">再玩一次</button>
+    </div>
+
+    <script>
+        class Game {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.idioms = [
+                    '一帆风顺', '二龙戏珠', '三阳开泰', '四季平安',
+                    '五福临门', '六六大顺', '七星高照', '八方来财'
+                ];
+                this.cards = [];
+                this.selectedCards = [];
+                this.matchedPairs = 0;
+                this.score = 0;
+                this.time = 0;
+                this.timer = null;
+                this.particles = [];
+                this.hintUsed = false;
+                
+                this.init();
+                this.setupEventListeners();
+                this.startTimer();
+                this.animate();
+            }
+
+            init() {
+                // 创建卡片对
+                const cardData = [];
+                this.idioms.forEach((idiom, index) => {
+                    cardData.push({ idiom, id: index });
+                    cardData.push({ idiom, id: index });
+                });
+
+                // 洗牌
+                this.shuffle(cardData);
+
+                // 创建卡片对象
+                const cols = 4;
+                const rows = 4;
+                const cardWidth = 150;
+                const cardHeight = 100;
+                const gap = 20;
+                const startX = (this.canvas.width - (cols * cardWidth + (cols - 1) * gap)) / 2;
+                const startY = (this.canvas.height - (rows * cardHeight + (rows - 1) * gap)) / 2;
+
+                this.cards = cardData.map((data, index) => ({
+                    idiom: data.idiom,
+                    id: data.id,
+                    x: startX + (index % cols) * (cardWidth + gap),
+                    y: startY + Math.floor(index / cols) * (cardHeight + gap),
+                    width: cardWidth,
+                    height: cardHeight,
+                    flipped: false,
+                    matched: false,
+                    index: index,
+                    flipProgress: 0,
+                    scale: 1
+                }));
+            }
+
+            shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            setupEventListeners() {
+                this.canvas.addEventListener('click', (e) => this.handleClick(e));
+            }
+
+            handleClick(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                for (let card of this.cards) {
+                    if (x >= card.x && x <= card.x + card.width &&
+                        y >= card.y && y <= card.y + card.height &&
+                        !card.flipped && !card.matched &&
+                        this.selectedCards.length < 2) {
+                        
+                        this.flipCard(card);
+                        this.selectedCards.push(card);
+
+                        if (this.selectedCards.length === 2) {
+                            setTimeout(() => this.checkMatch(), 600);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            flipCard(card) {
+                card.flipped = true;
+                let progress = 0;
+                const animate = () => {
+                    progress += 0.1;
+                    card.flipProgress = Math.min(progress, 1);
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                };
+                animate();
+            }
+
+            checkMatch() {
+                const [card1, card2] = this.selectedCards;
+
+                if (card1.id === card2.id) {
+                    // 匹配成功
+                    card1.matched = true;
+                    card2.matched = true;
+                    this.matchedPairs++;
+                    this.score += 100;
+                    this.createParticles(card1.x + card1.width / 2, card1.y + card1.height / 2);
+                    this.createParticles(card2.x + card2.width / 2, card2.y + card2.height / 2);
+                    
+                    document.getElementById('pairs').textContent = `${this.matchedPairs}/8`;
+                    document.getElementById('score').textContent = this.score;
+
+                    if (this.matchedPairs === 8) {
+                        this.gameWon();
+                    }
+                } else {
+                    // 匹配失败
+                    setTimeout(() => {
+                        card1.flipped = false;
+                        card2.flipped = false;
+                        card1.flipProgress = 0;
+                        card2.flipProgress = 0;
+                    }, 500);
+                }
+
+                this.selectedCards = [];
+            }
+
+            createParticles(x, y) {
+                const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe'];
+                for (let i = 0; i < 15; i++) {
+                    this.particles.push({
+                        x: x,
+                        y: y,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        life: 1,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        size: Math.random() * 6 + 3
+                    });
+                }
+            }
+
+            updateParticles() {
+                this.particles = this.particles.filter(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.2;
+                    p.life -= 0.02;
+                    return p.life > 0;
+                });
+            }
+
+            drawParticles() {
+                this.particles.forEach(p => {
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.life;
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    this.ctx.restore();
+                });
+            }
+
+            draw() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.cards.forEach(card => {
+                    this.ctx.save();
+                    
+                    const centerX = card.x + card.width / 2;
+                    const centerY = card.y + card.height / 2;
+                    
+                    this.ctx.translate(centerX, centerY);
+                    const scaleX = Math.abs(Math.cos(card.flipProgress * Math.PI));
+                    this.ctx.scale(scaleX * card.scale, card.scale);
+                    this.ctx.translate(-centerX, -centerY);
+
+                    if (card.matched) {
+                        this.ctx.globalAlpha = 0.3;
+                    }
+
+                    // 绘制卡片背景
+                    const gradient = this.ctx.createLinearGradient(
+                        card.x, card.y, 
+                        card.x + card.width, card.y + card.height
+                    );
+                    
+                    if (card.flipped || card.matched) {
+                        gradient.addColorStop(0, '#4facfe');
+                        gradient.addColorStop(1, '#00f2fe');
+                    } else {
+                        gradient.addColorStop(0, '#667eea');
+                        gradient.addColorStop(1, '#764ba2');
+                    }
+
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.beginPath();
+                    this.ctx.roundRect(card.x, card.y, card.width, card.height, 15);
+                    this.ctx.fill();
+
+                    // 绘制边框
+                    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                    this.ctx.lineWidth = 3;
+                    this.ctx.stroke();
+
+                    // 绘制内容
+                    this.ctx.fillStyle = 'white';
+                    this.ctx.font = 'bold 24px Microsoft YaHei';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+
+                    if (card.flipProgress > 0.5 && (card.flipped || card.matched)) {
+                        this.ctx.fillText(card.idiom, centerX, centerY);
+                    } else if (!card.flipped && !card.matched) {
+                        this.ctx.font = 'bold 40px Arial';
+                        this.ctx.fillText('?', centerX, centerY);
+                    }
+
+                    this.ctx.restore();
+                });
+
+                this.drawParticles();
+            }
+
+            animate() {
+                this.updateParticles();
+                this.draw();
+                requestAnimationFrame(() => this.animate());
+            }
+
+            startTimer() {
+                this.timer = setInterval(() => {
+                    this.time++;
+                    document.getElementById('time').textContent = this.time;
+                }, 1000);
+            }
+
+            gameWon() {
+                clearInterval(this.timer);
+                const bonus = Math.max(0, 500 - this.time * 5);
+                this.score += bonus;
+                
+                document.getElementById('finalTime').textContent = this.time;
+                document.getElementById('finalScore').textContent = this.score;
+                
+                setTimeout(() => {
+                    document.getElementById('victoryMessage').classList.add('show');
+                }, 500);
+            }
+
+            showHint() {
+                if (this.hintUsed) return;
+                
+                const unmatched = this.cards.filter(c => !c.matched && !c.flipped);
+                if (unmatched.length >= 2) {
+                    const first = unmatched[0];
+                    const second = unmatched.find(c => c.id === first.id && c !== first);
+                    
+                    if (second) {
+                        first.scale = 1.1;
+                        second.scale = 1.1;
+                        
+                        setTimeout(() => {
+                            first.scale = 1;
+                            second.scale = 1;
+                        }, 1000);
+                        
+                        this.score = Math.max(0, this.score - 50);
+                        document.getElementById('score').textContent = this.score;
+                        this.hintUsed = true;
+                    }
+                }
+            }
+
+            restart() {
+                clearInterval(this.timer);
+                this.matchedPairs = 0;
+                this.score = 0;
+                this.time = 0;
+                this.selectedCards = [];
+                this.particles = [];
+                this.hintUsed = false;
+                
+                document.getElementById('time').textContent = '0';
+                document.getElementById('pairs').textContent = '0/8';
+                document.getElementById('score').textContent = '0';
+                
+                this.init();
+                this.startTimer();
+            }
+        }
+
+        // 添加 roundRect 方法支持（兼容旧浏览器）
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+            };
+        }
+
+        // 启动游戏
+        const game = new Game();
+    </script>
+</body>
+</html>

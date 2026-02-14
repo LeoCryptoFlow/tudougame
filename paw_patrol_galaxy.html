@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汪汪队大闹银河系</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: radial-gradient(ellipse at center, #0a0a2e 0%, #050515 50%, #000000 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        /* 星空背景 */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* 银河 */
+        .galaxy {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse at center, 
+                rgba(65, 105, 225, 0.3) 0%, 
+                rgba(138, 43, 226, 0.2) 30%, 
+                rgba(25, 25, 112, 0.1) 60%, 
+                transparent 100%);
+            border-radius: 50%;
+            filter: blur(30px);
+            animation: galaxyRotate 80s linear infinite;
+        }
+        
+        @keyframes galaxyRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* 标题 */
+        .title {
+            position: absolute;
+            top: 3%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Arial Black', sans-serif;
+            font-size: 3.5rem;
+            color: #00BFFF;
+            text-shadow: 0 0 10px #1E90FF, 0 0 20px #4169E1, 0 0 30px #0000FF;
+            white-space: nowrap;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 10px #1E90FF, 0 0 20px #4169E1; }
+            to { text-shadow: 0 0 20px #00BFFF, 0 0 40px #1E90FF, 0 0 60px #4169E1; }
+        }
+        
+        /* 行星 */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+        }
+        
+        .planet1 {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #FF6B6B, #C0392B);
+            top: 10%;
+            right: 15%;
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.5), 0 0 20px rgba(255,107,107,0.3);
+        }
+        
+        .planet2 {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #98D8C8, #56C596);
+            bottom: 20%;
+            left: 10%;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5), 0 0 15px rgba(152,216,200,0.3);
+        }
+        
+        .planet3 {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #F7DC6F, #F4D03F);
+            top: 55%;
+            right: 8%;
+            box-shadow: inset -20px -20px 35px rgba(0,0,0,0.5), 0 0 25px rgba(247,220,111,0.3);
+        }
+        
+        .planet3::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 40px;
+            border: 4px solid rgba(244, 208, 63, 0.4);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(70deg);
+        }
+        
+        /* 流星 */
+        .meteor {
+            position: absolute;
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, #00BFFF);
+            animation: meteorFall 4s linear infinite;
+        }
+        
+        @keyframes meteorFall {
+            0% { transform: translateY(-150px) translateX(0); opacity: 1; }
+            100% { transform: translateY(100vh) translateX(150px); opacity: 0; }
+        }
+        
+        /* 狗狗通用样式 */
+        .dog {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* 毛毛 - 消防狗 */
+        .marshall {
+            left: 15%;
+            animation: dogFloat1 3s ease-in-out infinite;
+        }
+        
+        @keyframes dogFloat1 {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(-5deg); }
+            50% { transform: translate(-50%, -50%) translateY(-25px) rotate(5deg); }
+        }
+        
+        /* 阿奇 - 警察狗 */
+        .chase {
+            left: 32%;
+            animation: dogFloat2 3.2s ease-in-out infinite;
+        }
+        
+        @keyframes dogFloat2 {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(3deg); }
+            50% { transform: translate(-50%, -50%) translateY(-20px) rotate(-3deg); }
+        }
+        
+        /* 天天 - 飞行狗 */
+        .skye {
+            left: 50%;
+            animation: skyeFly 2.5s ease-in-out infinite;
+        }
+        
+        @keyframes skyeFly {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(-8deg); }
+            50% { transform: translate(-50%, -50%) translateY(-35px) rotate(8deg); }
+        }
+        
+        /* 灰灰 - 回收狗 */
+        .rocky {
+            left: 68%;
+            animation: dogFloat4 3.4s ease-in-out infinite;
+        }
+        
+        @keyframes dogFloat4 {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(4deg); }
+            50% { transform: translate(-50%, -50%) translateY(-18px) rotate(-4deg); }
+        }
+        
+        /* 小砾 - 建筑狗 */
+        .rubble {
+            left: 85%;
+            animation: dogFloat5 3.6s ease-in-out infinite;
+        }
+        
+        @keyframes dogFloat5 {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(-3deg); }
+            50% { transform: translate(-50%, -50%) translateY(-22px) rotate(3deg); }
+        }
+        
+        /* 狗狗标签 */
+        .dog-tag {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            padding: 3px 12px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            white-space: nowrap;
+        }
+        
+        /* 飞行器光效 */
+        .glow-effect {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+        
+        /* 太空飞船 */
+        .spaceship {
+            position: absolute;
+            animation: shipFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes shipFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        /* 能量环 */
+        .energy-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border: 3px solid rgba(0, 191, 255, 0.3);
+            border-radius: 50%;
+            animation: ringExpand 3s ease-out infinite;
+        }
+        
+        @keyframes ringExpand {
+            0% { width: 150px; height: 150px; opacity: 1; }
+            100% { width: 500px; height: 500px; opacity: 0; }
+        }
+        
+        .energy-ring:nth-child(2) { animation-delay: 1s; }
+        .energy-ring:nth-child(3) { animation-delay: 2s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 星星 -->
+        <div class="stars" id="stars"></div>
+        
+        <!-- 银河 -->
+        <div class="galaxy"></div>
+        
+        <!-- 能量环 -->
+        <div class="energy-ring"></div>
+        <div class="energy-ring"></div>
+        <div class="energy-ring"></div>
+        
+        <!-- 行星 -->
+        <div class="planet planet1"></div>
+        <div class="planet planet2"></div>
+        <div class="planet planet3"></div>
+        
+        <!-- 流星 -->
+        <div class="meteor" style="left: 15%; animation-delay: 0s;"></div>
+        <div class="meteor" style="left: 45%; animation-delay: 1.5s;"></div>
+        <div class="meteor" style="left: 75%; animation-delay: 3s;"></div>
+        
+        <!-- 毛毛 Marshall - 消防狗 (大麦町犬) -->
+        <div class="dog marshall">
+            <svg width="120" height="140" viewBox="0 0 120 140">
+                <!-- 身体 -->
+                <ellipse cx="60" cy="95" rx="35" ry="40" fill="white"/>
+                <!-- 斑点 -->
+                <circle cx="45" cy="85" r="8" fill="#333"/>
+                <circle cx="75" cy="90" r="6" fill="#333"/>
+                <circle cx="55" cy="105" r="5" fill="#333"/>
+                <circle cx="70" cy="75" r="4" fill="#333"/>
+                <!-- 消防服 -->
+                <ellipse cx="60" cy="100" rx="30" ry="25" fill="#FF4444"/>
+                <rect x="50" y="90" width="20" height="15" fill="#FFD700" rx="2"/>
+                <!-- 头部 -->
+                <circle cx="60" cy="40" r="30" fill="white"/>
+                <!-- 斑点 -->
+                <circle cx="45" cy="35" r="5" fill="#333"/>
+                <circle cx="75" cy="40" r="4" fill="#333"/>
+                <!-- 消防帽 -->
+                <ellipse cx="60" cy="18" rx="32" ry="12" fill="#FF4444"/>
+                <rect x="30" y="15" width="60" height="10" fill="#FF4444"/>
+                <rect x="50" y="8" width="20" height="10" fill="#FFD700"/>
+                <!-- 耳朵 -->
+                <ellipse cx="35" cy="30" rx="10" ry="15" fill="#333"/>
+                <ellipse cx="85" cy="30" rx="10" ry="15" fill="#333"/>
+                <!-- 眼睛 -->
+                <ellipse cx="48" cy="42" rx="8" ry="10" fill="white"/>
+                <ellipse cx="72" cy="42" rx="8" ry="10" fill="white"/>
+                <circle cx="48" cy="44" r="5" fill="#4169E1"/>
+                <circle cx="72" cy="44" r="5" fill="#4169E1"/>
+                <circle cx="50" cy="42" r="2" fill="white"/>
+                <circle cx="74" cy="42" r="2" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="60" cy="55" rx="8" ry="6" fill="#333"/>
+                <ellipse cx="58" cy="53" rx="2" ry="1" fill="#666"/>
+                <!-- 嘴巴 -->
+                <path d="M52 62 Q60 68 68 62" stroke="#333" stroke-width="2" fill="none"/>
+                <!-- 舌头 -->
+                <ellipse cx="60" cy="68" rx="5" ry="7" fill="#FF69B4"/>
+                <!-- 腿 -->
+                <rect x="40" y="125" width="12" height="15" fill="white" rx="4"/>
+                <rect x="68" y="125" width="12" height="15" fill="white" rx="4"/>
+            </svg>
+            <div class="dog-tag">毛毛</div>
+        </div>
+        
+        <!-- 阿奇 Chase - 警察狗 (德国牧羊犬) -->
+        <div class="dog chase">
+            <svg width="120" height="140" viewBox="0 0 120 140">
+                <!-- 身体 -->
+                <ellipse cx="60" cy="95" rx="35" ry="40" fill="#D4A574"/>
+                <!-- 警察服 -->
+                <ellipse cx="60" cy="100" rx="30" ry="25" fill="#1E3A5F"/>
+                <polygon points="60,85 55,95 65,95" fill="#FFD700"/>
+                <!-- 头部 -->
+                <circle cx="60" cy="40" r="28" fill="#D4A574"/>
+                <!-- 警察帽 -->
+                <ellipse cx="60" cy="18" rx="30" ry="10" fill="#1E3A5F"/>
+                <rect x="35" y="15" width="50" height="8" fill="#1E3A5F"/>
+                <ellipse cx="60" cy="15" rx="12" ry="6" fill="#FFD700"/>
+                <!-- 耳朵 -->
+                <polygon points="30,20 40,5 45,25" fill="#D4A574"/>
+                <polygon points="90,20 80,5 75,25" fill="#D4A574"/>
+                <!-- 脸部深色 -->
+                <ellipse cx="60" cy="50" rx="18" ry="15" fill="#8B6914"/>
+                <!-- 眼睛 -->
+                <ellipse cx="48" cy="40" rx="7" ry="9" fill="white"/>
+                <ellipse cx="72" cy="40" rx="7" ry="9" fill="white"/>
+                <circle cx="48" cy="42" r="4" fill="#4169E1"/>
+                <circle cx="72" cy="42" r="4" fill="#4169E1"/>
+                <circle cx="50" cy="40" r="2" fill="white"/>
+                <circle cx="74" cy="40" r="2" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="60" cy="52" rx="7" ry="5" fill="#333"/>
+                <!-- 嘴巴 -->
+                <path d="M52 58 Q60 63 68 58" stroke="#333" stroke-width="2" fill="none"/>
+                <!-- 腿 -->
+                <rect x="40" y="125" width="12" height="15" fill="#D4A574" rx="4"/>
+                <rect x="68" y="125" width="12" height="15" fill="#D4A574" rx="4"/>
+            </svg>
+            <div class="dog-tag">阿奇</div>
+        </div>
+        
+        <!-- 天天 Skye - 飞行狗 (可卡犬) -->
+        <div class="dog skye">
+            <svg width="120" height="140" viewBox="0 0 120 140">
+                <!-- 飞行器光效 -->
+                <ellipse cx="60" cy="100" rx="50" ry="20" fill="rgba(255,105,180,0.2)"/>
+                <!-- 身体 -->
+                <ellipse cx="60" cy="95" rx="30" ry="35" fill="#F5DEB3"/>
+                <!-- 飞行服 -->
+                <ellipse cx="60" cy="100" rx="25" ry="22" fill="#FF69B4"/>
+                <!-- 头部 -->
+                <circle cx="60" cy="40" r="28" fill="#F5DEB3"/>
+                <!-- 飞行帽 -->
+                <ellipse cx="60" cy="22" rx="30" ry="15" fill="#FF69B4"/>
+                <ellipse cx="60" cy="18" rx="15" ry="8" fill="#FF1493"/>
+                <!-- 护目镜 -->
+                <ellipse cx="48" cy="38" rx="12" ry="10" fill="#87CEEB" stroke="#FFD700" stroke-width="2"/>
+                <ellipse cx="72" cy="38" rx="12" ry="10" fill="#87CEEB" stroke="#FFD700" stroke-width="2"/>
+                <rect x="58" y="35" width="4" height="6" fill="#FFD700"/>
+                <!-- 眼睛（透过护目镜） -->
+                <circle cx="48" cy="40" r="4" fill="#4169E1"/>
+                <circle cx="72" cy="40" r="4" fill="#4169E1"/>
+                <!-- 耳朵 -->
+                <ellipse cx="30" cy="45" rx="12" ry="20" fill="#D2B48C"/>
+                <ellipse cx="90" cy="45" rx="12" ry="20" fill="#D2B48C"/>
+                <!-- 鼻子 -->
+                <ellipse cx="60" cy="52" rx="6" ry="4" fill="#8B4513"/>
+                <!-- 嘴巴 -->
+                <path d="M54 58 Q60 62 66 58" stroke="#8B4513" stroke-width="2" fill="none"/>
+                <!-- 翅膀 -->
+                <path d="M25 85 Q5 70 10 50 Q20 60 30 55 Q15 70 25 85" fill="#FF69B4" opacity="0.7"/>
+                <path d="M95 85 Q115 70 110 50 Q100 60 90 55 Q105 70 95 85" fill="#FF69B4" opacity="0.7"/>
+                <!-- 腿 -->
+                <rect x="42" y="125" width="10" height="15" fill="#F5DEB3" rx="4"/>
+                <rect x="68" y="125" width="10" height="15" fill="#F5DEB3" rx="4"/>
+            </svg>
+            <div class="dog-tag">天天</div>
+        </div>
+        
+        <!-- 灰灰 Rocky - 回收狗 (混种犬) -->
+        <div class="dog rocky">
+            <svg width="120" height="140" viewBox="0 0 120 140">
+                <!-- 身体 -->
+                <ellipse cx="60" cy="95" rx="35" ry="40" fill="#6B8E23"/>
+                <!-- 回收服 -->
+                <ellipse cx="60" cy="100" rx="30" ry="25" fill="#228B22"/>
+                <path d="M50 90 L60 80 L70 90 L65 100 L55 100 Z" fill="#32CD32"/>
+                <!-- 头部 -->
+                <circle cx="60" cy="40" r="28" fill="#6B8E23"/>
+                <!-- 帽子 -->
+                <ellipse cx="60" cy="20" rx="25" ry="12" fill="#228B22"/>
+                <rect x="40" y="18" width="40" height="6" fill="#228B22"/>
+                <!-- 耳朵 -->
+                <ellipse cx="32" cy="35" rx="10" ry="15" fill="#556B2F"/>
+                <ellipse cx="88" cy="35" rx="10" ry="15" fill="#556B2F"/>
+                <!-- 眼睛 -->
+                <ellipse cx="48" cy="40" rx="8" ry="10" fill="white"/>
+                <ellipse cx="72" cy="40" rx="8" ry="10" fill="white"/>
+                <circle cx="48" cy="42" r="5" fill="#4169E1"/>
+                <circle cx="72" cy="42" r="5" fill="#4169E1"/>
+                <circle cx="50" cy="40" r="2" fill="white"/>
+                <circle cx="74" cy="40" r="2" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="60" cy="52" rx="7" ry="5" fill="#333"/>
+                <!-- 嘴巴 -->
+                <path d="M52 58 Q60 63 68 58" stroke="#333" stroke-width="2" fill="none"/>
+                <!-- 腿 -->
+                <rect x="40" y="125" width="12" height="15" fill="#6B8E23" rx="4"/>
+                <rect x="68" y="125" width="12" height="15" fill="#6B8E23" rx="4"/>
+            </svg>
+            <div class="dog-tag">灰灰</div>
+        </div>
+        
+        <!-- 小砾 Rubble - 建筑狗 (斗牛犬) -->
+        <div class="dog rubble">
+            <svg width="120" height="140" viewBox="0 0 120 140">
+                <!-- 身体 -->
+                <ellipse cx="60" cy="95" rx="38" ry="42" fill="#DEB887"/>
+                <!-- 建筑服 -->
+                <ellipse cx="60" cy="100" rx="32" ry="28" fill="#FFA500"/>
+                <rect x="45" y="88" width="30" height="20" fill="#FFD700" rx="3"/>
+                <!-- 头部 -->
+                <circle cx="60" cy="42" r="32" fill="#DEB887"/>
+                <!-- 安全帽 -->
+                <ellipse cx="60" cy="18" rx="35" ry="15" fill="#FFD700"/>
+                <rect x="28" y="15" width="64" height="12" fill="#FFD700"/>
+                <rect x="50" y="8" width="20" height="8" fill="#FFA500"/>
+                <!-- 耳朵 -->
+                <ellipse cx="30" cy="40" rx="12" ry="18" fill="#D2B48C"/>
+                <ellipse cx="90" cy="40" rx="12" ry="18" fill="#D2B48C"/>
+                <!-- 脸部皱纹 -->
+                <path d="M40 45 Q50 48 60 45" stroke="#C4A06A" stroke-width="2" fill="none"/>
+                <path d="M60 45 Q70 48 80 45" stroke="#C4A06A" stroke-width="2" fill="none"/>
+                <!-- 眼睛 -->
+                <ellipse cx="48" cy="42" rx="8" ry="9" fill="white"/>
+                <ellipse cx="72" cy="42" rx="8" ry="9" fill="white"/>
+                <circle cx="48" cy="44" r="5" fill="#4169E1"/>
+                <circle cx="72" cy="44" r="5" fill="#4169E1"/>
+                <circle cx="50" cy="42" r="2" fill="white"/>
+                <circle cx="74" cy="42" r="2" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="60" cy="55" rx="10" ry="7" fill="#333"/>
+                <!-- 嘴巴 -->
+                <path d="M48 62 Q60 70 72 62" stroke="#333" stroke-width="2" fill="none"/>
+                <!-- 牙齿 -->
+                <rect x="55" y="64" width="4" height="5" fill="white" rx="1"/>
+                <rect x="61" y="64" width="4" height="5" fill="white" rx="1"/>
+                <!-- 腿 -->
+                <rect x="38" y="125" width="14" height="15" fill="#DEB887" rx="5"/>
+                <rect x="68" y="125" width="14" height="15" fill="#DEB887" rx="5"/>
+            </svg>
+            <div class="dog-tag">小砾</div>
+        </div>
+        
+        <!-- 标题 -->
+        <div class="title">汪汪队大闹银河系</div>
+    </div>
+    
+    <script>
+        // 生成随机星星
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 250; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 2 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>

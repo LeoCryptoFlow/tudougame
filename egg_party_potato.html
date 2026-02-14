@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简蛋仔派对 - 土豆大冒险</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        #gameContainer {
+            text-align: center;
+        }
+        
+        canvas {
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+            border: 5px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: block;
+            margin: 0 auto;
+        }
+        
+        #info {
+            margin-top: 20px;
+            color: white;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        #score {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+        
+        #controls {
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .game-over h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+        
+        .game-over button {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 18px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .game-over button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="info">
+            <div id="score">得分: 0</div>
+            <div id="controls">
+                🎮 空格/点击 = 跳跃 | ← → = 翻滚 | 躲避方块障碍物！
+            </div>
+        </div>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="game-over" id="gameOver">
+            <h2>游戏结束！</h2>
+            <p id="finalScore" style="font-size: 24px; margin: 20px 0;">得分: 0</p>
+            <button onclick="restartGame()">重新开始</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 游戏状态
+        let gameRunning = true;
+        let score = 0;
+        let frameCount = 0;
+        
+        // 物理常量
+        const GRAVITY = 0.6;
+        const GROUND_Y = canvas.height - 100;
+        
+        // 土豆玩家
+        class Potato {
+            constructor() {
+                this.x = 150;
+                this.y = GROUND_Y;
+                this.radius = 30;
+                this.velocityY = 0;
+                this.velocityX = 0;
+                this.rotation = 0;
+                this.rotationSpeed = 0;
+                this.isJumping = false;
+                this.color = '#F4A460';
+                this.eyeOffset = 0;
+                this.walkCycle = 0; // 行走动画周期
+                this.armSwing = 0; // 手臂摆动
+                this.legSwing = 0; // 腿部摆动
+            }
+            
+            jump() {
+                if (!this.isJumping) {
+                    this.velocityY = -15;
+                    this.isJumping = true;
+                    this.rotationSpeed = 0.15;
+                }
+            }
+            
+            rollLeft() {
+                this.velocityX = -5;
+                this.rotationSpeed = -0.2;
+            }
+            
+            rollRight() {
+                this.velocityX = 5;
+                this.rotationSpeed = 0.2;
+            }
+            
+            update() {
+                // 应用重力
+                this.velocityY += GRAVITY;
+                this.y += this.velocityY;
+                
+                // 水平移动
+                this.x += this.velocityX;
+                
+                // 边界检测
+                if (this.x < this.radius) {
+                    this.x = this.radius;
+                    this.velocityX = 0;
+                }
+                if (this.x > canvas.width - this.radius) {
+                    this.x = canvas.width - this.radius;
+                    this.velocityX = 0;
+                }
+                
+                // 地面碰撞
+                if (this.y >= GROUND_Y) {
+                    this.y = GROUND_Y;
+                    this.velocityY = 0;
+                    this.isJumping = false;
+                    this.velocityX *= 0.8; // 摩擦力
+                    this.rotationSpeed *= 0.8;
+                } else {
+                    this.velocityX *= 0.98; // 空气阻力
+                }
+                
+                // 旋转
+                this.rotation += this.rotationSpeed;
+                
+                // 眼睛动画
+                this.eyeOffset = Math.sin(frameCount * 0.1) * 2;
+                
+                // 行走动画
+                this.walkCycle += 0.15;
+                this.armSwing = Math.sin(this.walkCycle) * 0.3;
+                this.legSwing = Math.sin(this.walkCycle) * 0.4;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                
+                // 阴影
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetY = 5;
+                
+                // 左腿
+                ctx.save();
+                ctx.rotate(this.legSwing);
+                ctx.fillStyle = '#D2691E';
+                ctx.beginPath();
+                ctx.ellipse(-12, this.radius + 5, 6, 15, 0, 0, Math.PI * 2);
+                ctx.fill();
+                // 左脚
+                ctx.fillStyle = '#8B4513';
+                ctx.beginPath();
+                ctx.ellipse(-12, this.radius + 18, 8, 5, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                
+                // 右腿
+                ctx.save();
+                ctx.rotate(-this.legSwing);
+                ctx.fillStyle = '#D2691E';
+                ctx.beginPath();
+                ctx.ellipse(12, this.radius + 5, 6, 15, 0, 0, Math.PI * 2);
+                ctx.fill();
+                // 右脚
+                ctx.fillStyle = '#8B4513';
+                ctx.beginPath();
+                ctx.ellipse(12, this.radius + 18, 8, 5, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                
+                // 身体
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 高光
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.beginPath();
+                ctx.arc(-8, -8, 12, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
+                
+                // 左手
+                ctx.save();
+                ctx.rotate(this.armSwing);
+                ctx.fillStyle = '#D2691E';
+                ctx.beginPath();
+                ctx.ellipse(-this.radius - 5, 0, 8, 18, Math.PI / 4, 0, Math.PI * 2);
+                ctx.fill();
+                // 左手掌
+                ctx.fillStyle = '#CD853F';
+                ctx.beginPath();
+                ctx.arc(-this.radius - 10, 8, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                
+                // 右手
+                ctx.save();
+                ctx.rotate(-this.armSwing);
+                ctx.fillStyle = '#D2691E';
+                ctx.beginPath();
+                ctx.ellipse(this.radius + 5, 0, 8, 18, -Math.PI / 4, 0, Math.PI * 2);
+                ctx.fill();
+                // 右手掌
+                ctx.fillStyle = '#CD853F';
+                ctx.beginPath();
+                ctx.arc(this.radius + 10, 8, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                
+                // 眼睛
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(-10, this.eyeOffset, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(10, this.eyeOffset, 8, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 瞳孔
+                ctx.fillStyle = 'black';
+                ctx.beginPath();
+                ctx.arc(-10, this.eyeOffset + 2, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(10, this.eyeOffset + 2, 4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 嘴巴
+                ctx.strokeStyle = '#8B4513';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(0, 5, 10, 0.2, Math.PI - 0.2);
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+        }
+        
+        // 障碍物
+        class Obstacle {
+            constructor() {
+                this.width = 40 + Math.random() * 30;
+                this.height = 40 + Math.random() * 60;
+                this.x = canvas.width;
+                this.y = GROUND_Y + 30 - this.height;
+                this.speed = 3 + score * 0.005; // 降低速度
+                this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+                this.rotation = 0;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+            }
+            
+            update() {
+                this.x -= this.speed;
+                this.rotation += this.rotationSpeed;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+                ctx.rotate(this.rotation);
+                
+                // 障碍物阴影
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetY = 4;
+                
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+                
+                // 高光
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fillRect(-this.width / 2, -this.height / 2, this.width / 2, this.height / 2);
+                
+                ctx.restore();
+            }
+            
+            isOffScreen() {
+                return this.x + this.width < 0;
+            }
+            
+            collidesWith(potato) {
+                // 圆形与矩形碰撞检测
+                let closestX = Math.max(this.x, Math.min(potato.x, this.x + this.width));
+                let closestY = Math.max(this.y, Math.min(potato.y, this.y + this.height));
+                
+                let distanceX = potato.x - closestX;
+                let distanceY = potato.y - closestY;
+                let distanceSquared = distanceX * distanceX + distanceY * distanceY;
+                
+                return distanceSquared < (potato.radius * potato.radius);
+            }
+        }
+        
+        // 粒子效果
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8 - 2;
+                this.radius = Math.random() * 4 + 2;
+                this.color = color;
+                this.alpha = 1;
+                this.decay = 0.02;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.3;
+                this.alpha -= this.decay;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+            
+            isDead() {
+                return this.alpha <= 0;
+            }
+        }
+        
+        // 鼓励话语系统
+        const encouragements = [
+            "加油！我能行！💪",
+            "我是最棒的土豆！🥔",
+            "没什么能阻挡我！⚡",
+            "继续前进！✨",
+            "我相信自己！🌟",
+            "永不放弃！🔥",
+            "今天也要努力呀！🎯",
+            "我会成功的！🏆",
+            "勇敢前行！🚀",
+            "我可以做到！💫"
+        ];
+        
+        let currentEncouragement = "";
+        let encouragementTimer = 0;
+        let encouragementAlpha = 0;
+        
+        function showEncouragement() {
+            currentEncouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+            encouragementTimer = 180; // 显示3秒（60fps）
+            encouragementAlpha = 1;
+        }
+        
+        function drawEncouragement() {
+            if (encouragementTimer > 0) {
+                encouragementTimer--;
+                
+                // 淡入淡出效果
+                if (encouragementTimer > 150) {
+                    encouragementAlpha = (180 - encouragementTimer) / 30;
+                } else if (encouragementTimer < 30) {
+                    encouragementAlpha = encouragementTimer / 30;
+                }
+                
+                ctx.save();
+                ctx.globalAlpha = encouragementAlpha;
+                ctx.font = 'bold 24px Arial';
+                ctx.fillStyle = '#FFD700';
+                ctx.strokeStyle = '#8B4513';
+                ctx.lineWidth = 3;
+                ctx.textAlign = 'center';
+                
+                // 描边
+                ctx.strokeText(currentEncouragement, potato.x, potato.y - 60);
+                // 填充
+                ctx.fillText(currentEncouragement, potato.x, potato.y - 60);
+                ctx.restore();
+            }
+        }
+        
+        // 游戏对象
+        const potato = new Potato();
+        let obstacles = [];
+        let particles = [];
+        let obstacleSpawnTimer = 0;
+        let encouragementSpawnTimer = 0;
+        
+        // 背景音乐
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let musicPlaying = false;
+        
+        // 创建简单的背景音乐
+        function playBackgroundMusic() {
+            if (musicPlaying) return;
+            musicPlaying = true;
+            
+            const notes = [
+                { freq: 523.25, time: 0 },    // C5
+                { freq: 587.33, time: 0.3 },  // D5
+                { freq: 659.25, time: 0.6 },  // E5
+                { freq: 783.99, time: 0.9 },  // G5
+                { freq: 659.25, time: 1.2 },  // E5
+                { freq: 587.33, time: 1.5 },  // D5
+                { freq: 523.25, time: 1.8 },  // C5
+            ];
+            
+            function playMelody() {
+                if (!gameRunning) {
+                    musicPlaying = false;
+                    return;
+                }
+                
+                notes.forEach(note => {
+                    setTimeout(() => {
+                        if (gameRunning) {
+                            const oscillator = audioContext.createOscillator();
+                            const gainNode = audioContext.createGain();
+                            
+                            oscillator.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                            
+                            oscillator.frequency.value = note.freq;
+                            oscillator.type = 'sine';
+                            
+                            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                            
+                            oscillator.start(audioContext.currentTime);
+                            oscillator.stop(audioContext.currentTime + 0.3);
+                        }
+                    }, note.time * 1000);
+                });
+                
+                setTimeout(() => {
+                    if (gameRunning) playMelody();
+                }, 2100);
+            }
+            
+            playMelody();
+        }
+        
+        // 键盘控制
+        const keys = {};
+        
+        window.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+            
+            if (e.code === 'Space' && gameRunning) {
+                e.preventDefault();
+                potato.jump();
+            }
+        });
+        
+        window.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
+        
+        // 鼠标/触摸控制
+        canvas.addEventListener('click', () => {
+            if (gameRunning) {
+                potato.jump();
+                // 首次点击启动音乐
+                if (!musicPlaying) {
+                    playBackgroundMusic();
+                }
+            }
+        });
+        
+        // 绘制地面
+        function drawGround() {
+            ctx.fillStyle = '#8FBC8F';
+            ctx.fillRect(0, GROUND_Y + 30, canvas.width, canvas.height - GROUND_Y - 30);
+            
+            // 地面装饰
+            ctx.strokeStyle = '#6B8E6B';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, GROUND_Y + 30);
+                ctx.lineTo(i + 10, GROUND_Y + 40);
+                ctx.stroke();
+            }
+        }
+        
+        // 绘制云朵
+        function drawClouds() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            
+            const cloudPositions = [
+                { x: (frameCount * 0.3) % (canvas.width + 200) - 100, y: 50 },
+                { x: (frameCount * 0.2) % (canvas.width + 200) - 100, y: 120 },
+                { x: (frameCount * 0.25) % (canvas.width + 200) - 100, y: 180 }
+            ];
+            
+            cloudPositions.forEach(pos => {
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 30, 0, Math.PI * 2);
+                ctx.arc(pos.x + 25, pos.y, 35, 0, Math.PI * 2);
+                ctx.arc(pos.x + 50, pos.y, 30, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+        
+        // 生成障碍物
+        function spawnObstacle() {
+            obstacles.push(new Obstacle());
+        }
+        
+        // 创建爆炸粒子
+        function createExplosion(x, y, color) {
+            for (let i = 0; i < 15; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+        
+        // 游戏结束
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('finalScore').textContent = `得分: ${score}`;
+            document.getElementById('gameOver').style.display = 'block';
+            
+            // 创建爆炸效果
+            createExplosion(potato.x, potato.y, potato.color);
+        }
+        
+        // 重新开始
+        function restartGame() {
+            gameRunning = true;
+            score = 0;
+            frameCount = 0;
+            obstacles = [];
+            particles = [];
+            potato.x = 150;
+            potato.y = GROUND_Y;
+            potato.velocityY = 0;
+            potato.velocityX = 0;
+            potato.rotation = 0;
+            potato.rotationSpeed = 0;
+            potato.isJumping = false;
+            document.getElementById('gameOver').style.display = 'none';
+            gameLoop();
+        }
+        
+        // 更新得分显示
+        function updateScore() {
+            document.getElementById('score').textContent = `得分: ${score}`;
+        }
+        
+        // 主游戏循环
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制背景元素
+            drawClouds();
+            drawGround();
+            
+            // 处理键盘输入
+            if (keys['ArrowLeft']) {
+                potato.rollLeft();
+            }
+            if (keys['ArrowRight']) {
+                potato.rollRight();
+            }
+            
+            // 更新土豆
+            potato.update();
+            potato.draw();
+            
+            // 绘制鼓励话语
+            drawEncouragement();
+            
+            // 生成鼓励话语
+            encouragementSpawnTimer++;
+            if (encouragementSpawnTimer > 180) { // 每3秒自动说话
+                showEncouragement();
+                encouragementSpawnTimer = 0;
+            }
+            
+            // 生成障碍物
+            obstacleSpawnTimer++;
+            if (obstacleSpawnTimer > 140 - Math.min(score * 0.3, 40)) { // 降低难度，增加生成间隔
+                spawnObstacle();
+                obstacleSpawnTimer = 0;
+            }
+            
+            // 更新和绘制障碍物
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                obstacles[i].update();
+                obstacles[i].draw();
+                
+                // 碰撞检测
+                if (obstacles[i].collidesWith(potato)) {
+                    gameOver();
+                    return;
+                }
+                
+                // 移除屏幕外的障碍物并加分
+                if (obstacles[i].isOffScreen()) {
+                    obstacles.splice(i, 1);
+                    score += 10;
+                    updateScore();
+                }
+            }
+            
+            // 更新和绘制粒子
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                
+                if (particles[i].isDead()) {
+                    particles.splice(i, 1);
+                }
+            }
+            
+            frameCount++;
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // 启动游戏
+        updateScore();
+        gameLoop();
+        
+        // 自动启动背景音乐
+        setTimeout(() => {
+            playBackgroundMusic();
+        }, 500);
+        
+        // 自动显示第一条鼓励话语
+        setTimeout(() => {
+            showEncouragement();
+        }, 2000);
+    </script>
+</body>
+</html>
