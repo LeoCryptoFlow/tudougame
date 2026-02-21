@@ -1,0 +1,188 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+}
+
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.search-section {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+#searchInput {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    width: 300px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+    border-color: #667eea;
+}
+
+#searchButton {
+    padding: 0.8rem 1.5rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+#searchButton:hover {
+    background: #5a6fd8;
+}
+
+.categories {
+    margin-bottom: 2rem;
+}
+
+.categories h2, .templates h2 {
+    margin-bottom: 1rem;
+    color: #444;
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.category-btn {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.category-btn:hover, .category-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.template-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.template-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.template-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.template-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.template-category {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    background: #f0f2f5;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.template-content {
+    padding: 1.5rem;
+}
+
+.template-description {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.copy-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.copy-btn:hover {
+    background: #5a6fd8;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: #333;
+    color: white;
+    margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+    .search-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #searchInput {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .template-grid {
+        grid-template-columns: 1fr;
+    }
+}

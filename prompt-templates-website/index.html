@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI提示词模板库 - 高质量提示词集合</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>AI提示词模板库</h1>
+        <p>收集和分享高质量的AI提示词模板</p>
+    </header>
+    
+    <main>
+        <section class="search-section">
+            <input type="text" id="searchInput" placeholder="搜索提示词模板...">
+            <button id="searchButton">搜索</button>
+        </section>
+        
+        <div style="text-align: center; margin-bottom: 1rem;">
+            <a href="./submit.html" style="display: inline-block; padding: 0.5rem 1rem; background: #28a745; color: white; text-decoration: none; border-radius: 5px;">+ 提交新模板</a>
+        </div>
+        
+        <section class="categories">
+            <h2>分类浏览</h2>
+            <div class="category-list">
+                <button class="category-btn active" data-category="all">全部</button>
+                <button class="category-btn" data-category="writing">写作助手</button>
+                <button class="category-btn" data-category="coding">编程开发</button>
+                <button class="category-btn" data-category="analysis">分析研究</button>
+                <button class="category-btn" data-category="creative">创意生成</button>
+                <button class="category-btn" data-category="business">商业应用</button>
+            </div>
+        </section>
+        
+        <section class="templates">
+            <h2>热门提示词模板</h2>
+            <div class="template-grid" id="templateGrid">
+                <!-- 模板将通过JavaScript动态加载 -->
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button id="loadMoreBtn" style="padding: 0.8rem 1.5rem; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">加载更多模板</button>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 AI提示词模板库. All rights reserved.</p>
+    </footer>
+    
+    <script src="templates-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

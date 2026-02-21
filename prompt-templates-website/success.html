@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付成功 - AI提示词模板库</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+        
+        .success-title {
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+        
+        .order-details {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        
+        .actions {
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AI提示词模板库</h1>
+        <p>支付成功</p>
+    </header>
+    
+    <main>
+        <div class="success-container">
+            <div class="success-icon">✓</div>
+            <h2 class="success-title">支付成功！</h2>
+            <p>感谢您的支持，您的模板已提交并将在24小时内审核上线。</p>
+            
+            <div class="order-details">
+                <h3>订单详情</h3>
+                <div class="detail-row">
+                    <span>订单号:</span>
+                    <span>#ORD-20231005-001</span>
+                </div>
+                <div class="detail-row">
+                    <span>模板标题:</span>
+                    <span>待审核模板</span>
+                </div>
+                <div class="detail-row">
+                    <span>提交方案:</span>
+                    <span>标准提交</span>
+                </div>
+                <div class="detail-row">
+                    <span>提交时间:</span>
+                    <span id="submitTime"></span>
+                </div>
+                <div class="detail-row total">
+                    <span>支付金额:</span>
+                    <span>¥9.90</span>
+                </div>
+            </div>
+            
+            <p>我们已收到您的支付，审核团队将尽快处理您的模板提交。</p>
+            
+            <div class="actions">
+                <a href="./index.html" class="btn btn-primary">返回首页</a>
+                <a href="./submit.html" class="btn btn-secondary">提交更多</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 AI提示词模板库. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // 设置提交时间
+        document.getElementById('submitTime').textContent = new Date().toLocaleString('zh-CN');
+    </script>
+</body>
+</html>

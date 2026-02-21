@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提交新模板 - AI提示词模板库</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #444;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .nav-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        
+        .payment-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .payment-option {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: #667eea;
+        }
+        
+        .payment-option.selected {
+            border-color: #667eea;
+            background: #eef2ff;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 0.5rem 0;
+        }
+        
+        .benefits {
+            text-align: left;
+            margin-top: 0.5rem;
+        }
+        
+        .benefits li {
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .payment-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .payment-button:hover {
+            background: #218838;
+        }
+        
+        .payment-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AI提示词模板库</h1>
+        <p>提交新的提示词模板</p>
+    </header>
+    
+    <main>
+        <a href="./index.html" class="nav-link">← 返回主页</a>
+        
+        <div class="form-container">
+            <div class="success-message" id="successMessage">
+                模板提交成功！感谢您的贡献。
+            </div>
+            
+            <form id="templateForm">
+                <div class="form-group">
+                    <label for="title">模板标题 *</label>
+                    <input type="text" id="title" name="title" required placeholder="例如：学术论文写作助手">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">分类 *</label>
+                    <select id="category" name="category" required>
+                        <option value="">请选择分类</option>
+                        <option value="writing">写作助手</option>
+                        <option value="coding">编程开发</option>
+                        <option value="analysis">分析研究</option>
+                        <option value="creative">创意生成</option>
+                        <option value="business">商业应用</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">简短描述 *</label>
+                    <input type="text" id="description" name="description" required placeholder="简要描述此模板的用途">
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">提示词内容 *</label>
+                    <textarea id="content" name="content" required placeholder="请输入完整的提示词内容，可以使用换行符分段"></textarea>
+                </div>
+                
+                <div class="payment-section">
+                    <h3>支持我们并提交模板</h3>
+                    <p>您的支持帮助我们维护和改进这个平台。选择一个支持选项来提交您的模板：</p>
+                    
+                    <div class="payment-options">
+                        <div class="payment-option" data-price="0" data-name="免费提交">
+                            <h4>免费提交</h4>
+                            <div class="price">¥0</div>
+                            <ul class="benefits">
+                                <li>基础审核</li>
+                                <li>标准展示</li>
+                                <li>社区可见</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="payment-option" data-price="9.9" data-name="标准提交">
+                            <h4>标准提交</h4>
+                            <div class="price">¥9.9</div>
+                            <ul class="benefits">
+                                <li>快速审核</li>
+                                <li>优先展示</li>
+                                <li>社区可见</li>
+                                <li>作者署名</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="payment-option" data-price="29.9" data-name="高级提交">
+                            <h4>高级提交</h4>
+                            <div class="price">¥29.9</div>
+                            <ul class="benefits">
+                                <li>即时审核</li>
+                                <li>置顶展示</li>
+                                <li>特色推荐</li>
+                                <li>作者署名</li>
+                                <li>收益分成</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="selectedPrice" name="price" value="0">
+                    <input type="hidden" id="selectedPlan" name="plan" value="免费提交">
+                    
+                    <button type="button" class="payment-button" id="payButton" disabled>
+                        选择支付方式并提交
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 AI提示词模板库. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // 支付选项选择功能
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const payButton = document.getElementById('payButton');
+        const selectedPriceInput = document.getElementById('selectedPrice');
+        const selectedPlanInput = document.getElementById('selectedPlan');
+        
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // 移除所有选项的选中状态
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // 添加当前选项的选中状态
+                this.classList.add('selected');
+                
+                // 更新隐藏字段
+                const price = this.dataset.price;
+                const plan = this.dataset.name;
+                selectedPriceInput.value = price;
+                selectedPlanInput.value = plan;
+                
+                // 启用支付按钮
+                payButton.disabled = false;
+                payButton.textContent = `支付 ¥${price} 并提交`;
+            });
+        });
+        
+        // 支付按钮点击事件
+        payButton.addEventListener('click', function() {
+            // 验证表单
+            if (!validateForm()) {
+                return;
+            }
+            
+            if (selectedPriceInput.value === '0') {
+                // 免费提交，直接处理表单
+                handleSubmit();
+            } else {
+                // 跳转到支付页面
+                const price = selectedPriceInput.value;
+                const plan = selectedPlanInput.value;
+                window.location.href = `./payment.html?amount=${price}&plan=${encodeURIComponent(plan)}`;
+            }
+        });
+        
+        // 表单验证
+        function validateForm() {
+            const title = document.getElementById('title').value.trim();
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value.trim();
+            const content = document.getElementById('content').value.trim();
+            
+            if (!title || !category || !description || !content) {
+                alert('请填写所有必填字段');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // 处理表单提交
+        function handleSubmit() {
+            // 获取表单数据
+            const formData = {
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                content: document.getElementById('content').value,
+                price: selectedPriceInput.value,
+                plan: selectedPlanInput.value
+            };
+            
+            // 显示成功消息
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // 重置表单
+            document.getElementById('templateForm').reset();
+            
+            // 重置支付选项
+            paymentOptions.forEach(opt => opt.classList.remove('selected'));
+            selectedPriceInput.value = '0';
+            selectedPlanInput.value = '免费提交';
+            payButton.disabled = true;
+            payButton.textContent = '选择支付方式并提交';
+            
+            // 在实际应用中，这里应该发送数据到服务器
+            console.log('提交的模板数据:', formData);
+            
+            // 滚动到顶部显示成功消息
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // 3秒后隐藏成功消息
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

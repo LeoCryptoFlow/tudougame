@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付处理 - AI提示词模板库</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .payment-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .payment-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .amount {
+            font-size: 2rem;
+            color: #667eea;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .plan-name {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .payment-method {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+        }
+        
+        .payment-method:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .payment-method.selected {
+            border-color: #667eea;
+            background: #eef2ff;
+        }
+        
+        .pay-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .pay-button:hover {
+            background: #218838;
+        }
+        
+        .pay-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .processing {
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AI提示词模板库</h1>
+        <p>安全支付</p>
+    </header>
+    
+    <main>
+        <div class="payment-container">
+            <div class="payment-icon">💳</div>
+            <h2>完成支付</h2>
+            
+            <div class="plan-name" id="planName">标准提交</div>
+            <div class="amount" id="amount">¥9.9</div>
+            
+            <p>请选择支付方式</p>
+            
+            <div class="payment-methods">
+                <div class="payment-method selected" data-method="alipay">
+                    <div>支付宝</div>
+                </div>
+                <div class="payment-method" data-method="wechat">
+                    <div>微信支付</div>
+                </div>
+                <div class="payment-method" data-method="card">
+                    <div>银行卡</div>
+                </div>
+            </div>
+            
+            <button class="pay-button" id="payButton">立即支付</button>
+            
+            <div class="processing" id="processing">
+                <div class="spinner"></div>
+                <p>正在处理支付...</p>
+            </div>
+            
+            <a href="./submit.html" class="back-link">← 返回</a>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 AI提示词模板库. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // 获取URL参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = urlParams.get('amount') || '9.9';
+        const plan = urlParams.get('plan') || '标准提交';
+        
+        // 更新页面显示
+        document.getElementById('amount').textContent = `¥${amount}`;
+        document.getElementById('planName').textContent = plan;
+        
+        // 支付方式选择
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // 支付按钮点击事件
+        document.getElementById('payButton').addEventListener('click', function() {
+            // 显示处理状态
+            document.getElementById('payButton').style.display = 'none';
+            document.getElementById('processing').style.display = 'block';
+            
+            // 模拟支付处理
+            setTimeout(() => {
+                // 支付成功后跳转
+                alert('支付成功！感谢您的支持，您的模板将很快上线。');
+                window.location.href = './success.html';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
