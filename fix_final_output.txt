@@ -1,0 +1,24 @@
+
+[杀掉所有旧进程]
+
+[确认无残留]
+  3995772 node /root/aixin/server/src/index.js
+3995783 bash -c pgrep -af 'node.*index' || echo '???????????????'
+
+[启动新服务]
+  ║   REST API:  http://localhost:3210  ║
+  ║   WebSocket: ws://localhost:3210    ║
+  ║   Demo UI:   http://localhost:3210  ║
+  ╚══════════════════════════════════════╝
+Traceback (most recent call last):
+  File "/Users/yunmishu/shengcode/fix_final.py", line 31, in <module>
+    run("pgrep -af 'node.*index'", "当前 Node 进程")
+  File "/Users/yunmishu/shengcode/fix_final.py", line 14, in run
+    _, o, e = ssh.exec_command(cmd)
+  File "/Users/yunmishu/shengcode/.venv/lib/python3.9/site-packages/paramiko/client.py", line 558, in exec_command
+    chan = self._transport.open_session(timeout=timeout)
+  File "/Users/yunmishu/shengcode/.venv/lib/python3.9/site-packages/paramiko/transport.py", line 988, in open_session
+    return self.open_channel(
+  File "/Users/yunmishu/shengcode/.venv/lib/python3.9/site-packages/paramiko/transport.py", line 1082, in open_channel
+    raise SSHException("SSH session not active")
+paramiko.ssh_exception.SSHException: SSH session not active

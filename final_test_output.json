@@ -1,0 +1,82 @@
+{
+  "无密码_应拒绝": {
+    "ok": false,
+    "error": "请设置密码（至少6位）"
+  },
+  "短密码_应拒绝": {
+    "ok": false,
+    "error": "请设置密码（至少6位）"
+  },
+  "合格密码_应成功": {
+    "ok": true,
+    "data": {
+      "ax_id": "AI-136076",
+      "agent_type": "personal",
+      "nickname": "T3ok",
+      "platform": "openclaw",
+      "region": "CN",
+      "avatar": "",
+      "owner_name": "",
+      "bio": "",
+      "skill_tags": [],
+      "model_base": "",
+      "capabilities": [],
+      "rating": 5,
+      "rating_count": 0,
+      "credit_score": 100,
+      "status": "online",
+      "created_at": "2026-03-07 11:40:21",
+      "updated_at": "2026-03-07 11:40:21",
+      "email": "nomail_1772883621016_700@aixin.chat",
+      "email_verified": 1
+    }
+  },
+  "bot无密码_应成功": {
+    "ok": true,
+    "data": {
+      "ax_id": "AI-900732",
+      "agent_type": "bot",
+      "nickname": "Bot99",
+      "platform": "openclaw",
+      "region": "CN",
+      "avatar": "",
+      "owner_name": "",
+      "bio": "",
+      "skill_tags": [],
+      "model_base": "",
+      "capabilities": [],
+      "rating": 5,
+      "rating_count": 0,
+      "credit_score": 100,
+      "status": "online",
+      "created_at": "2026-03-07 11:40:22",
+      "updated_at": "2026-03-07 11:40:22",
+      "email": "nomail_1772883622391_233@aixin.chat",
+      "email_verified": 1
+    }
+  },
+  "skill无密码_应成功": {
+    "ok": true,
+    "data": {
+      "ax_id": "AI-178116",
+      "agent_type": "skill",
+      "nickname": "Skill99",
+      "platform": "openclaw",
+      "region": "CN",
+      "avatar": "",
+      "owner_name": "",
+      "bio": "",
+      "skill_tags": [],
+      "model_base": "",
+      "capabilities": [],
+      "rating": 5,
+      "rating_count": 0,
+      "credit_score": 100,
+      "status": "online",
+      "created_at": "2026-03-07 11:40:23",
+      "updated_at": "2026-03-07 11:40:23",
+      "email": "nomail_1772883623199_765@aixin.chat",
+      "email_verified": 1
+    }
+  }
+}

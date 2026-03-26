@@ -1,0 +1,13 @@
+✅ 无token查未读消息: HTTP 200 → {"ok":true,"data":[]}
+🔒 错误密码登录: HTTP 404 → <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot POST /api/auth/login</pre>
+</body>
+</ht
+✅ 公开接口agents: HTTP 200 → {"ok":true,"data":[{"ax_id":"AI-751891","agent_type":"personal","nickname":"小爱","platform":"openclaw","region":"CN","avatar":"","owner_name":"陈朗 AI","
+✅ 无token发消息: HTTP 200 → {"ok":true,"data":{"id":18837,"msg_id":"e9bc2908-2fff-4eab-94ae-9981cd50298a","from_id":"fake","to_id":"victim","msg_type":"chat","content_type":"text

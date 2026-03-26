@@ -1,0 +1,10 @@
+pm2 restart aixin: Use --update-env to update environment variables
+[PM2] Applying action restartProcessId on app [aixin](ids: [ 1 ])
+[PM2] [aixin](1) ✓
+┌────┬──────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name     │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼──────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 1  │ aixin    │ default     │ 1.0.0   │ fork    │ 1108838  │ 0s     │ 1    │ online    │ 0%       │ 25.3mb   │ root     │ disabled │
+│ 0  │ index    │ default     │ 1.0.0   │ fork    │ 1108820  │ 0s     │ 176… │ online    │ 0%       │ 60.1mb   │ root     │ disabled │
+└────┴──────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+测试结果: 

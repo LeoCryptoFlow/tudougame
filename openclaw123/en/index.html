@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ===== SEO Basics ===== -->
+  <title>OpenClaw123 - OpenClaw Resource Hub | AI Tool Aggregator | Beginner's Guide</title>
+  <meta name="description" content="OpenClaw123 is the most comprehensive OpenClaw resource hub. Featuring EasyClaw, NetEase Youdao Lobster, Tencent QClaw and more, plus Skill marketplace, KOL recommendations, and video tutorials." />
+  <meta name="keywords" content="OpenClaw,OpenClaw123,EasyClaw,QClaw,AI tools,resource hub,Skill marketplace,AI beginner,LLM,MCP,Claude,ChatGPT,AI navigation" />
+  <meta name="author" content="OpenClaw123" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://openclaw123.xyz/en/" />
+
+  <!-- ===== Open Graph ===== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="OpenClaw123 - AI Resource Hub" />
+  <meta property="og:description" content="The most comprehensive OpenClaw resource hub with domestic & international versions, Skill marketplace, KOL picks, and video tutorials." />
+  <meta property="og:url" content="https://openclaw123.xyz/en/" />
+  <meta property="og:site_name" content="OpenClaw123" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ===== Twitter Card ===== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OpenClaw123 - AI Resource Hub" />
+  <meta name="twitter:description" content="The most comprehensive OpenClaw resource hub with Skill marketplace, KOL picks, beginner-friendly." />
+
+  <!-- ===== Structured Data JSON-LD ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "OpenClaw123",
+    "alternateName": "OpenClaw Resource Hub",
+    "url": "https://openclaw123.xyz/en/",
+    "description": "The most comprehensive OpenClaw resource hub with domestic & international versions, Skill marketplace, KOL recommendations, and video tutorials.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://openclaw123.xyz/en/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "OpenClaw Versions",
+    "description": "Popular OpenClaw versions worldwide",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OpenClaw Official",
+        "url": "https://openclaw.ai/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "EasyClaw (China)",
+        "url": "https://easyclaw.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "NetEase Youdao Lobster",
+        "url": "https://lobsterai.youdao.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Tencent QClaw",
+        "url": "https://claw.guanjia.qq.com/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ===== Styles & Fonts ===== -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🦞</span>
+        <span class="logo-text">OpenClaw<span class="accent">123</span></span>
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search OpenClaw resources…"
+          autocomplete="off"
+          aria-label="Search resources"
+          oninput="filterCards()"
+        />
+        <button class="search-clear" onclick="clearSearch()" title="Clear" aria-label="Clear search">✕</button>
+      </div>
+
+      <nav class="top-nav" id="topNav" aria-label="Category navigation">
+        <!-- Dynamically generated -->
+      </nav>
+
+      <a href="../index.html" class="lang-switch" title="切换到中文">🌐 中文</a>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <h1>Your Go-To<br /><span class="gradient-text">OpenClaw Resource Hub</span></h1>
+    <p class="hero-seo">Featuring EasyClaw, NetEase Youdao Lobster, Tencent QClaw and more. Skill marketplace, KOL picks, AI video tutorials — all in one place.</p>
+    <div class="hero-stats" id="heroStats"></div>
+  </section>
+
+  <!-- ===== Main Content ===== -->
+  <main class="container" id="mainContent" role="main">
+    <!-- Dynamically rendered -->
+  </main>
+
+  <!-- SEO Static Text -->
+  <noscript>
+    <section style="max-width:800px;margin:2rem auto;padding:1rem;">
+      <h2>OpenClaw123 - AI Resource Hub</h2>
+      <p>OpenClaw123 is the most comprehensive OpenClaw resource hub. We feature:</p>
+      <ul>
+        <li><strong>OpenClaw Versions</strong>: Official, EasyClaw (China), NetEase Youdao Lobster, Tencent QClaw</li>
+        <li><strong>Skill Marketplace</strong>: ClawHub Official, OpenClaw101 Learning, Skill Hub China</li>
+        <li><strong>KOL Picks</strong>: Fu Sheng, ChenLang AI, Liu Xiaopai, Andrej Karpathy's LLM Deep Dive</li>
+        <li><strong>Industry Reports</strong>: AI Agent Industry Report, iiMedia Research Report, Analysys Market Insights</li>
+        <li><strong>Coming Soon</strong>: Lei Jun's Lobster Phone, Aixin, HomeClaw</li>
+      </ul>
+      <p>Please enable JavaScript for the full experience.</p>
+    </section>
+  </noscript>
+
+  <!-- No Result -->
+  <div class="no-result" id="noResult" style="display:none">
+    <span>😅</span> No matching resources found. Try a different keyword~
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>OpenClaw123 · The Ultimate AI Resource Hub · Continuously Updated · 
+      <a href="https://github.com/LeoCryptoFlow/openclaw123" target="_blank" rel="noopener noreferrer">GitHub</a> Open Source & Free
+    </p>
+    <p class="footer-tip">Click the ⭐ on cards to add to your favorites</p>
+    <p class="footer-seo">OpenClaw123.xyz - OpenClaw Resource Hub | EasyClaw | NetEase Lobster | Tencent QClaw | AI Tool Aggregator</p>
+  </footer>
+
+  <!-- ===== FAB ===== -->
+  <button class="fab" id="fabBtn" onclick="toggleFav()" title="My Favorites" aria-label="Open favorites">
+    ⭐ <span id="fabCount">0</span>
+  </button>
+
+  <!-- Favorites Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="toggleFav()"></div>
+  <aside class="drawer" id="drawer" aria-label="My Favorites">
+    <div class="drawer-header">
+      <h2>⭐ My Favorites</h2>
+      <button onclick="toggleFav()" aria-label="Close favorites">✕</button>
+    </div>
+    <div class="drawer-body" id="drawerBody">
+      <p class="empty-tip">No favorites yet. Click the ⭐ on any card to add!</p>
+    </div>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>

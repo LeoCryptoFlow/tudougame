@@ -1,0 +1,1 @@
+{"ok":false,"error":"请输入爱信号 (AI-ID)","hint":"登录字段名必须是 ax_id 或 axId，请确认您使用的是最新版爱信技能（v1.2.0+）。如遇问题请前往 OpenClaw 技能市场更新爱信技能。","latest_version":"1.2.0","doc_url":"https://aixin.chat/api/skill/manifest"}

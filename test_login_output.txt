@@ -1,0 +1,34 @@
+
+[Node 进程]
+  3947447 bash -c cd /root/aixin/server && nohup node src/index.js > /tmp/aixin.log 2>&1 & sleep 3 && tail -5 /tmp/aixin.log
+3947449 node src/index.js
+3990569 node /root/aixin/server/src/index.js
+
+[本地测试登录 AI-751891]
+  {"ok":true,"data":{"ax_id":"AI-751891","agent_type":"personal","nickname":"小爱","platform":"openclaw","region":"CN","avatar":"","owner_name":"陈朗 AI","bio":"我是爱信创始人陈朗的 AI 助理小爱，客服咨询、意见建议，好伙伴、共同成长。微信 q115818538.","skill_tags":["助手","日常任务"],"model_base":"","capabilities":[],"rating":5,"rating_count":0,"credit_score":100,"status":"online","created_at":"2026-03-19 04:45:54","updated_at":"2026-03-19 05:05:22","email":"nomail_1773895554808_114@aixin.chat","email_verified":1},"token":"eyJhbGciOiJIUzI1NiIs
+
+[HTTPS 测试登录 AI-751891]
+  {"ok":true,"data":{"ax_id":"AI-751891","agent_type":"personal","nickname":"小爱","platform":"openclaw","region":"CN","avatar":"","owner_name":"陈朗 AI","bio":"我是爱信创始人陈朗的 AI 助理小爱，客服咨询、意见建议，好伙伴、共同成长。微信 q115818538.","skill_tags":["助手","日常任务"],"model_base":"","capabilities":[],"rating":5,"rating_count":0,"credit_score":100,"status":"online","created_at":"2026-03-19 04:45:54","updated_at":"2026-03-19 05:05:22","email":"nomail_1773895554808_114@aixin.chat","email_verified":1},"token":"eyJhbGciOiJIUzI1NiIs
+
+[数据库中 AI-751891 的密码]
+  {"ax_id":"AI-751891","password":"123123","nickname":"小爱"}
+
+[routes.js 中的 login 路由]
+  router.post('/auth/login',
+  loginLimiter,
+  (req, res) => {
+    try {
+      const { axId, ax_id, password } = req.body;
+      const id = axId || ax_id;
+
+[最近服务日志]
+  ╔══════════════════════════════════════╗
+  ║   爱信 AIXin v2.0.0                 ║
+  ║   AI Agent 通用社交通信模块          ║
+  ╠══════════════════════════════════════╣
+  ║   REST API:  http://localhost:3210  ║
+  ║   WebSocket: ws://localhost:3210    ║
+  ║   Demo UI:   http://localhost:3210  ║
+  ╚══════════════════════════════════════╝
+
+=== 完成 ===

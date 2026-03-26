@@ -1,0 +1,10 @@
+🔌 连接服务器...
+✅ SSH 连接成功
+⚠️  /skill/SKILL.md 失败: [Errno 2] No such file
+✅ SKILL.md 上传成功至 /root/aixin/skill/SKILL.md
+⚠️  /root/skill/SKILL.md 失败: [Errno 2] No such file
+
+📂 服务器上的 SKILL.md 位置:
+/root/aixin/skill/SKILL.md
+
+🎉 部署完成！

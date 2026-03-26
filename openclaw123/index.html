@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ===== SEO 基础 ===== -->
+  <title>OpenClaw123 - OpenClaw资源导航 | 龙虾AI工具聚合 | 小白入门指南</title>
+  <meta name="description" content="OpenClaw123 是最全的 OpenClaw（龙虾AI）资源聚合导航站。收录 EasyClaw、网易有道龙虾、腾讯QClaw 等国内版本，Skill市场、KOL博主推荐、视频教程，小白也能轻松上手。" />
+  <meta name="keywords" content="OpenClaw,龙虾AI,OpenClaw123,EasyClaw,QClaw,网易有道龙虾,AI工具,资源导航,Skill市场,AI入门,大语言模型,MCP,Claude,ChatGPT,AI导航" />
+  <meta name="author" content="OpenClaw123" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://openclaw123.xyz/" />
+
+  <!-- ===== Open Graph (微信/QQ/微博分享) ===== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="OpenClaw123 - 龙虾AI资源聚合导航" />
+  <meta property="og:description" content="最全的 OpenClaw 资源导航站，收录国内外版本、Skill市场、KOL推荐、视频教程，小白也能轻松上手。" />
+  <meta property="og:url" content="https://openclaw123.xyz/" />
+  <meta property="og:site_name" content="OpenClaw123" />
+  <meta property="og:locale" content="zh_CN" />
+
+  <!-- ===== Twitter Card ===== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OpenClaw123 - 龙虾AI资源聚合导航" />
+  <meta name="twitter:description" content="最全的 OpenClaw 资源导航站，收录国内外版本、Skill市场、KOL推荐，小白入门首选。" />
+
+  <!-- ===== 结构化数据 JSON-LD ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "OpenClaw123",
+    "alternateName": "OpenClaw资源导航",
+    "url": "https://openclaw123.xyz/",
+    "description": "最全的 OpenClaw（龙虾AI）资源聚合导航站，收录国内外版本、Skill市场、KOL博主推荐、视频教程。",
+    "inLanguage": "zh-CN",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://openclaw123.xyz/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "OpenClaw 版本推荐",
+    "description": "OpenClaw 国内外主流版本汇总",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OpenClaw 官方原版",
+        "url": "https://openclaw.ai/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "EasyClaw 国内版",
+        "url": "https://easyclaw.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "网易有道龙虾",
+        "url": "https://lobsterai.youdao.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "腾讯 QClaw",
+        "url": "https://claw.guanjia.qq.com/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ===== 样式 & 字体 ===== -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== 顶部导航 ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🦞</span>
+        <span class="logo-text">OpenClaw<span class="accent">123</span></span>
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="搜索 OpenClaw 资源…"
+          autocomplete="off"
+          aria-label="搜索资源"
+          oninput="filterCards()"
+        />
+        <button class="search-clear" onclick="clearSearch()" title="清除" aria-label="清除搜索">✕</button>
+      </div>
+
+      <nav class="top-nav" id="topNav" aria-label="分类导航">
+        <!-- 动态生成分类锚点 -->
+      </nav>
+
+      <a href="en/index.html" class="lang-switch" title="Switch to English">🌐 EN</a>
+    </div>
+  </header>
+
+  <!-- ===== 英雄区 ===== -->
+  <section class="hero">
+    <h1>小白也能用的<br /><span class="gradient-text">OpenClaw 资源聚合导航</span></h1>
+    <p class="hero-seo">收录 EasyClaw、网易有道龙虾、腾讯QClaw 等国内版本，Skill市场、KOL推荐、AI视频教程，一站搞定。</p>
+    <div class="hero-stats" id="heroStats"></div>
+  </section>
+
+  <!-- ===== 主内容 ===== -->
+  <main class="container" id="mainContent" role="main">
+    <!-- 动态渲染分类卡片 -->
+  </main>
+
+  <!-- SEO 静态文字（对搜索引擎可见，JS渲染前也有内容） -->
+  <noscript>
+    <section style="max-width:800px;margin:2rem auto;padding:1rem;">
+      <h2>OpenClaw123 - 龙虾AI资源导航</h2>
+      <p>OpenClaw123 是最全的 OpenClaw 资源聚合导航站。我们收录了：</p>
+      <ul>
+        <li><strong>OpenClaw 版本</strong>：官方原版、EasyClaw 国内版、网易有道龙虾、腾讯 QClaw</li>
+        <li><strong>Skill 市场</strong>：ClawHub 官方市场、OpenClaw101 学习站、Skill Hub 中国</li>
+        <li><strong>KOL 推荐</strong>：傅盛、陈朗AI、刘小排、安德烈·卡帕西大语言模型讲解</li>
+        <li><strong>咨询报告</strong>：AI Agent 行业报告、艾媒咨询行业研究报告、易观分析市场洞察</li>
+        <li><strong>未来规划</strong>：雷军龙虾手机、爱信 Aixin、HomeClaw</li>
+      </ul>
+      <p>请启用 JavaScript 以获得完整体验。</p>
+    </section>
+  </noscript>
+
+  <!-- 无结果提示 -->
+  <div class="no-result" id="noResult" style="display:none">
+    <span>😅</span> 没有找到匹配的资源，换个关键词试试吧~
+  </div>
+
+  <!-- ===== 底部 ===== -->
+  <footer class="footer">
+    <p>OpenClaw123 · 最全的龙虾AI资源导航 · 持续更新中 · 
+      <a href="https://github.com/LeoCryptoFlow/openclaw123" target="_blank" rel="noopener noreferrer">GitHub</a> 开源免费
+    </p>
+    <p class="footer-tip">点击卡片右上角 ⭐ 可收藏到"我的收藏"</p>
+    <p class="footer-seo">OpenClaw123.xyz - OpenClaw资源导航 | EasyClaw | 网易有道龙虾 | 腾讯QClaw | AI工具聚合</p>
+  </footer>
+
+  <!-- ===== 悬浮收藏入口 ===== -->
+  <button class="fab" id="fabBtn" onclick="toggleFav()" title="我的收藏" aria-label="打开收藏夹">
+    ⭐ <span id="fabCount">0</span>
+  </button>
+
+  <!-- 收藏抽屉 -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="toggleFav()"></div>
+  <aside class="drawer" id="drawer" aria-label="我的收藏">
+    <div class="drawer-header">
+      <h2>⭐ 我的收藏</h2>
+      <button onclick="toggleFav()" aria-label="关闭收藏夹">✕</button>
+    </div>
+    <div class="drawer-body" id="drawerBody">
+      <p class="empty-tip">还没有收藏，点击卡片右上角的 ⭐ 添加吧！</p>
+    </div>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>

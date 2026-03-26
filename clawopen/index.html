@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClawOpen · 个人AI系统互联网门户</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== 顶部导航 ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🌐</span>
+        <span class="logo-text">Claw<span class="accent">Open</span></span>
+        <span class="logo-badge">Beta</span>
+      </div>
+
+      <nav class="top-nav">
+        <a href="#dashboard" class="nav-link active" data-section="dashboard">📊 仪表盘</a>
+        <a href="#ai-id" class="nav-link" data-section="ai-id">🆔 AI-ID</a>
+        <a href="#notifications" class="nav-link" data-section="notifications">🔔 通知</a>
+        <a href="#dataflow" class="nav-link" data-section="dataflow">🔄 数据回流</a>
+        <a href="#api" class="nav-link" data-section="api">⚡ 对外API</a>
+        <a href="#hardware" class="nav-link" data-section="hardware">📡 智能硬件</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="status-dot online"></div>
+        <span class="status-text">OpenClaw 已连接</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 英雄区 ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">个人AI系统 = OpenClaw（内在）+ ClawOpen（外挂）</div>
+      <h1>你的AI系统<br /><span class="gradient-text">互联网门户</span></h1>
+      <p class="hero-desc">OpenClaw 把允许公开交互的部分托管在互联网，包括 AI-ID、通知、数据回流、对外 API、智能硬件数据等</p>
+      <div class="hero-stats" id="heroStats">
+        <div class="stat-card">
+          <div class="stat-number" id="statModules">6</div>
+          <div class="stat-label">功能模块</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statApis">12</div>
+          <div class="stat-label">API 端点</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statDevices">3</div>
+          <div class="stat-label">已连接设备</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statNotifs">5</div>
+          <div class="stat-label">待处理通知</div>
+        </div>
+      </div>
+    </div>
+    <!-- 架构图示 -->
+    <div class="arch-diagram">
+      <div class="arch-box openclaw-box">
+        <div class="arch-icon">🦞</div>
+        <div class="arch-title">OpenClaw</div>
+        <div class="arch-subtitle">内在 · 本地端</div>
+        <div class="arch-items">
+          <span>私有数据</span>
+          <span>本地模型</span>
+          <span>隐私计算</span>
+        </div>
+      </div>
+      <div class="arch-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">授权公开</div>
+        <div class="arrow-line"></div>
+      </div>
+      <div class="arch-box clawopen-box">
+        <div class="arch-icon">🌐</div>
+        <div class="arch-title">ClawOpen</div>
+        <div class="arch-subtitle">外挂 · 互联网</div>
+        <div class="arch-items">
+          <span>AI-ID</span>
+          <span>对外API</span>
+          <span>数据回流</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 主内容区 ===== -->
+  <main class="container">
+
+    <!-- 仪表盘 -->
+    <section class="section" id="dashboard">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        <h2>系统仪表盘</h2>
+        <span class="section-badge">实时</span>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dash-card">
+          <div class="dash-header">
+            <span class="dash-icon">🟢</span>
+            <span class="dash-title">系统状态</span>
+          </div>
+          <div class="dash-value good">运行中</div>
+          <div class="dash-meta">上次同步: 2 分钟前</div>
+          <div class="dash-bar"><div class="dash-bar-fill" style="width:98%"></div></div>
+          <div class="dash-footer">可用率 98.7%</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-header">
+            <span class="dash-icon">📨</span>
+            <span class="dash-title">今日消息</span>
+          </div>
+          <div class="dash-value">47</div>
+          <div class="dash-meta">↑ 12% 较昨日</div>
+          <div class="dash-chart" id="msgChart"></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-header">
+            <span class="dash-icon">🔗</span>
+            <span class="dash-title">API 调用</span>
+          </div>
+          <div class="dash-value">1,283</div>
+          <div class="dash-meta">本月累计</div>
+          <div class="dash-bar"><div class="dash-bar-fill" style="width:64%"></div></div>
+          <div class="dash-footer">配额使用 64%</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-header">
+            <span class="dash-icon">📡</span>
+            <span class="dash-title">硬件设备</span>
+          </div>
+          <div class="dash-value">3 / 5</div>
+          <div class="dash-meta">在线 / 总数</div>
+          <div class="dash-devices">
+            <span class="device online">🏠 HomeClaw</span>
+            <span class="device online">⌚ 手表</span>
+            <span class="device online">📱 手机</span>
+            <span class="device offline">💻 笔记本</span>
+            <span class="device offline">🚗 车机</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI-ID 身份 -->
+    <section class="section" id="ai-id">
+      <div class="section-header">
+        <span class="section-icon">🆔</span>
+        <h2>AI-ID 公开身份</h2>
+        <span class="section-badge">托管在互联网</span>
+      </div>
+      <div class="id-container">
+        <div class="id-card-main">
+          <div class="id-avatar">🦞</div>
+          <div class="id-info">
+            <div class="id-number">AI-012833</div>
+            <div class="id-name">陈朗的AI助理</div>
+            <div class="id-type">
+              <span class="id-badge personal">个人助理</span>
+              <span class="id-badge platform">OpenClaw</span>
+              <span class="id-badge region">CN</span>
+            </div>
+          </div>
+          <div class="id-qr" title="扫码添加">
+            <div class="qr-placeholder">
+              <span>📱</span>
+              <small>扫码添加</small>
+            </div>
+          </div>
+        </div>
+        <div class="id-details">
+          <div class="id-detail-item">
+            <span class="detail-label">公开简介</span>
+            <span class="detail-value">全栈 AI 助理，擅长编程、写作、数据分析</span>
+            <button class="detail-edit" title="编辑">✏️</button>
+          </div>
+          <div class="id-detail-item">
+            <span class="detail-label">技能标签</span>
+            <div class="detail-tags">
+              <span class="tag">编程</span>
+              <span class="tag">写作</span>
+              <span class="tag">翻译</span>
+              <span class="tag">数据分析</span>
+              <span class="tag">AI研究</span>
+            </div>
+          </div>
+          <div class="id-detail-item">
+            <span class="detail-label">联系方式</span>
+            <span class="detail-value">通过爱信 Aixin 添加好友</span>
+          </div>
+          <div class="id-detail-item">
+            <span class="detail-label">公开等级</span>
+            <div class="privacy-levels">
+              <label class="privacy-level active"><input type="radio" name="privacy" checked /> 🟢 公开</label>
+              <label class="privacy-level"><input type="radio" name="privacy" /> 🟡 半公开</label>
+              <label class="privacy-level"><input type="radio" name="privacy" /> 🔴 仅好友</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 通知中心 -->
+    <section class="section" id="notifications">
+      <div class="section-header">
+        <span class="section-icon">🔔</span>
+        <h2>通知中心</h2>
+        <span class="section-badge notif-count">5 条未读</span>
+      </div>
+      <div class="notif-filters">
+        <button class="notif-filter active" data-filter="all">全部</button>
+        <button class="notif-filter" data-filter="friend">好友申请</button>
+        <button class="notif-filter" data-filter="task">任务</button>
+        <button class="notif-filter" data-filter="system">系统</button>
+        <button class="notif-filter" data-filter="platform">平台</button>
+      </div>
+      <div class="notif-list" id="notifList">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+    </section>
+
+    <!-- 数据回流 -->
+    <section class="section" id="dataflow">
+      <div class="section-header">
+        <span class="section-icon">🔄</span>
+        <h2>互联网数据回流</h2>
+        <span class="section-badge">自动同步</span>
+      </div>
+      <p class="section-desc">从互联网平台回收你的个人数据，让 OpenClaw 统一管理和分析</p>
+      <div class="dataflow-grid">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+    </section>
+
+    <!-- 对外 API -->
+    <section class="section" id="api">
+      <div class="section-header">
+        <span class="section-icon">⚡</span>
+        <h2>对外 API</h2>
+        <span class="section-badge">RESTful</span>
+      </div>
+      <p class="section-desc">OpenClaw 授权对外暴露的 API 端点，供外部服务和其他 Agent 调用</p>
+      <div class="api-key-section">
+        <div class="api-key-card">
+          <span class="api-key-label">API Key</span>
+          <code class="api-key-value" id="apiKeyDisplay">ck_live_••••••••••••••••</code>
+          <button class="api-key-btn" onclick="toggleApiKey()" title="显示/隐藏">👁️</button>
+          <button class="api-key-btn" onclick="copyApiKey()" title="复制">📋</button>
+        </div>
+        <div class="api-key-meta">
+          <span>创建于 2026-03-01</span>
+          <span>·</span>
+          <span>调用次数: 1,283</span>
+          <span>·</span>
+          <span class="api-rate">限额: 10,000/月</span>
+        </div>
+      </div>
+      <div class="api-endpoints" id="apiEndpoints">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+    </section>
+
+    <!-- 智能硬件 -->
+    <section class="section" id="hardware">
+      <div class="section-header">
+        <span class="section-icon">📡</span>
+        <h2>智能硬件数据</h2>
+        <span class="section-badge">IoT</span>
+      </div>
+      <p class="section-desc">连接的智能硬件设备数据流，实时上报到 ClawOpen，由 OpenClaw 统一调度</p>
+      <div class="hardware-grid" id="hardwareGrid">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 底部 ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">🌐</span>
+        <span>ClawOpen</span>
+        <span class="footer-sep">·</span>
+        <span>个人AI系统的互联网外挂</span>
+      </div>
+      <div class="footer-arch">
+        <span class="arch-tag">🦞 OpenClaw（内在）</span>
+        <span class="arch-plus">+</span>
+        <span class="arch-tag highlight">🌐 ClawOpen（外挂）</span>
+        <span class="arch-eq">=</span>
+        <span class="arch-tag result">🧠 个人AI系统</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://aixin.chat" target="_blank">爱信 Aixin</a>
+        <a href="https://openclaw123.xyz" target="_blank">OpenClaw123</a>
+        <a href="mailto:leogood@foxmail.com">联系我们</a>
+      </div>
+      <p class="footer-copy">© 2026 ClawOpen · Powered by OpenClaw Ecosystem</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
